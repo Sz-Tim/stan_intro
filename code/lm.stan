@@ -7,14 +7,14 @@ data {
 parameters {
 	real a;  //intercept
 	real b;  //slope
-	real<lower=0> y_sd;  //residual error standard deviation
+	real<lower=0> sigma;  //residual error standard deviation
 }
 
 model {
   //priors
   a ~ normal(0, 10);
   b ~ normal(0, 10);
-  y_sd ~ cauchy(0, 2.5);
+  sigma ~ cauchy(0, 2.5);
   //likelihood
-	y ~ normal(a + b*x, y_sd);
+	y ~ normal(a + b*x, sigma);
 }

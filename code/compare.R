@@ -1,6 +1,8 @@
-# Intro to stan
-# Tim Szewczyk
-
+#'---
+#' title: Intro to stan
+#' author: Tim Szewczyk
+#' output: github_document
+#'---
 
 ## Introduction to stan for Allen lab meeting on 2017 Oct 19. This script
 ## provides a basic comparison of a simple linear regression using standard

@@ -1,7 +1,7 @@
 Intro to stan
 ================
 Tim Szewczyk
-Wed Sep 27 18:39:24 2017
+Wed Sep 27 18:45:01 2017
 
 ``` r
 ## Introduction to stan for Allen lab meeting on 2017 Oct 19. This script
@@ -57,18 +57,18 @@ summary(out_lm)
     ## 
     ## Residuals:
     ##     Min      1Q  Median      3Q     Max 
-    ## -8.5374 -2.3241 -0.0491  2.3277  9.2617 
+    ## -7.7520 -2.0044  0.1478  2.0878  7.3943 
     ## 
     ## Coefficients:
     ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   4.9198     0.2403   20.47   <2e-16 ***
-    ## x             2.6771     0.2473   10.83   <2e-16 ***
+    ## (Intercept)   5.4559     0.2080   26.23   <2e-16 ***
+    ## x             3.0626     0.2216   13.82   <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 3.397 on 198 degrees of freedom
-    ## Multiple R-squared:  0.3719, Adjusted R-squared:  0.3687 
-    ## F-statistic: 117.2 on 1 and 198 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 2.934 on 198 degrees of freedom
+    ## Multiple R-squared:  0.4909, Adjusted R-squared:  0.4884 
+    ## F-statistic:   191 on 1 and 198 DF,  p-value: < 2.2e-16
 
 ``` r
 par(mfrow=c(2,2))
@@ -95,26 +95,26 @@ lines(new.x$x, pred.lm[,3], col="blue", lty=2)
 
 ``` r
 stan_d <- list(n=n, x=sim.df$x, y=sim.df$y)
-out_stan <- stan(file=here("code", "lm.stan"), data=stan_d)
+out_stan <- stan(file=here("code", "lm.stan"), data=stan_d, iter=10000)
 out_stan
 ```
 
     ## Inference for Stan model: lm.
-    ## 4 chains, each with iter=2000; warmup=1000; thin=1; 
-    ## post-warmup draws per chain=1000, total post-warmup draws=4000.
+    ## 4 chains, each with iter=10000; warmup=5000; thin=1; 
+    ## post-warmup draws per chain=5000, total post-warmup draws=20000.
     ## 
     ##          mean se_mean   sd    2.5%     25%     50%     75%   97.5% n_eff
-    ## a        4.91    0.00 0.25    4.42    4.75    4.91    5.07    5.40  3588
-    ## b        2.68    0.00 0.25    2.19    2.51    2.68    2.85    3.17  3427
-    ## sigma    3.42    0.00 0.17    3.10    3.29    3.41    3.53    3.75  3092
-    ## lp__  -345.11    0.03 1.27 -348.27 -345.70 -344.79 -344.20 -343.67  2087
+    ## a        5.45    0.00 0.21    5.04    5.31    5.45    5.59    5.87 17553
+    ## b        3.06    0.00 0.22    2.62    2.91    3.06    3.21    3.49 18614
+    ## sigma    2.94    0.00 0.15    2.67    2.84    2.94    3.04    3.25 17972
+    ## lp__  -315.74    0.01 1.23 -318.91 -316.30 -315.42 -314.84 -314.33  9877
     ##       Rhat
     ## a        1
     ## b        1
     ## sigma    1
     ## lp__     1
     ## 
-    ## Samples were drawn using NUTS(diag_e) at Wed Sep 27 18:39:45 2017.
+    ## Samples were drawn using NUTS(diag_e) at Wed Sep 27 18:45:17 2017.
     ## For each parameter, n_eff is a crude measure of effective sample size,
     ## and Rhat is the potential scale reduction factor on split chains (at 
     ## convergence, Rhat=1).

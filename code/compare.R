@@ -41,10 +41,12 @@ plot(y ~ x, data=sim.df)
 
 out_lm <- lm(y ~ x, data=sim.df)
 summary(out_lm)
+par(mfrow=c(2,2))
 plot(out_lm)
 
 new.x <- data.frame(x=seq(min(sim.df$x), max(sim.df$x), length.out=100))
 pred.lm <- predict(out_lm, new.x, interval="confidence")
+par(mfrow=c(1,1))
 plot(y ~ x, data=sim.df)
 abline(out_lm, col="blue")
 lines(new.x$x, pred.lm[,2], col="blue", lty=2)

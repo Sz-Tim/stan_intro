@@ -58,7 +58,7 @@ lines(new.x$x, pred.lm[,3], col="blue", lty=2)
 ##---
 
 stan_d <- list(n=n, x=sim.df$x, y=sim.df$y)
-out_stan <- stan(file="code/lm.stan", data=stan_d)
+out_stan <- stan(file=here("code", "lm.stan"), data=stan_d)
 out_stan
 plot(out_stan)
 traceplot(out_stan)

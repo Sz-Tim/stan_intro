@@ -25,10 +25,10 @@ rstan_options(auto_write=TRUE); options(mc.cores=parallel::detectCores())
 ## data simulation
 ##---
 
-n <- 200
+n <- 500
 a <- 5
 b <- 3
-sigma <- 3
+sigma <- 7
 sim.df <- data.frame(x=rnorm(n, 0, 1))
 sim.df$y <- rnorm(n, a + b*sim.df$x, sigma)
 plot(y ~ x, data=sim.df)
@@ -58,7 +58,7 @@ lines(new.x$x, pred.lm[,3], col="blue", lty=2)
 ##---
 
 stan_d <- list(n=n, x=sim.df$x, y=sim.df$y)
-out_stan <- stan(file=here("code", "lm.stan"), data=stan_d, iter=10000)
+out_stan <- stan(file=here("code", "lm.stan"), data=stan_d, iter=5000)
 out_stan
 plot(out_stan)
 traceplot(out_stan)
@@ -83,11 +83,11 @@ plot(y ~ x, data=sim.df)
 for(i in 1:nGG) {
   abline(a=stan.gg$value[stan.gg$Parameter=="a" & stan.gg$iter==i],
          b=stan.gg$value[stan.gg$Parameter=="b" & stan.gg$iter==i],
-         col=rgb(0,0,1,1/sqrt(nGG)))
+         col=rgb(84/240,48/240,5/240,1/sqrt(nGG)))
 }
-abline(out_lm)
-lines(new.x$x, pred.lm[,2], lty=2)
-lines(new.x$x, pred.lm[,3], lty=2)
+abline(out_lm, col=rgb(1/240,102/240,94/240), lwd=2)
+lines(new.x$x, pred.lm[,2], lty=2, col=rgb(1/240,102/240,94/240), lwd=2)
+lines(new.x$x, pred.lm[,3], lty=2, col=rgb(1/240,102/240,94/240), lwd=2)
 
 comp.df <- stan.gg %>% group_by(Parameter) %>%
   summarise(mn=mean(value), 

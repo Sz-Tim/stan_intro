@@ -15,7 +15,7 @@
 ## set up environment
 ##---
 
-if(!require(pacman)) install.packages("pacman")
+if(!require(pacman)) install.packages("pacman", dependencies=TRUE)
 p_load(tidyverse, rstan, ggmcmc, here); theme_set(theme_bw())
 rstan_options(auto_write=TRUE); options(mc.cores=parallel::detectCores())
 

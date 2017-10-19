@@ -16,7 +16,7 @@
 ##---
 
 if(!require(pacman)) install.packages("pacman", dependencies=TRUE)
-p_load(tidyverse, rstan, ggmcmc, here); theme_set(theme_bw())
+p_load(tidyverse, rstan, ggmcmc); theme_set(theme_bw())
 rstan_options(auto_write=TRUE); options(mc.cores=parallel::detectCores())
 
 
@@ -25,10 +25,10 @@ rstan_options(auto_write=TRUE); options(mc.cores=parallel::detectCores())
 ## data simulation
 ##---
 
-n <- 500
+n <- 100
 a <- 5
 b <- 3
-sigma <- 7
+sigma <- 5
 sim.df <- data.frame(x=rnorm(n, 0, 1))
 sim.df$y <- rnorm(n, a + b*sim.df$x, sigma)
 plot(y ~ x, data=sim.df)
@@ -49,6 +49,11 @@ pred.lm <- predict(out_lm, new.x, interval="confidence")
 par(mfrow=c(1,1))
 plot(y ~ x, data=sim.df)
 abline(out_lm, col="blue")
+segments(sim.df$x, sim.df$y, sim.df$x, out_lm$fitted.values, 
+         col=rgb(0,0,1,0.5))
+hist(out_lm$residuals, breaks=10)
+plot(y ~ x, data=sim.df, cex.axis=2, cex.lab=2)
+abline(out_lm, col="blue")
 lines(new.x$x, pred.lm[,2], col="blue", lty=2)
 lines(new.x$x, pred.lm[,3], col="blue", lty=2)
 
@@ -58,12 +63,11 @@ lines(new.x$x, pred.lm[,3], col="blue", lty=2)
 ##---
 
 stan_d <- list(n=n, x=sim.df$x, y=sim.df$y)
-out_stan <- stan(file=here("code", "lm.stan"), data=stan_d, iter=5000)
+out_stan <- stan(file="code/lm.stan", data=stan_d, iter=5000, thin=5)
 out_stan
 plot(out_stan)
 traceplot(out_stan)
 pairs(out_stan)
-stan_diag(out_stan)
 stan_rhat(out_stan)
 
 stan.gg <- ggs(out_stan)

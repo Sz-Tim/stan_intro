@@ -16,7 +16,7 @@
 ##---
 
 if(!require(pacman)) install.packages("pacman", dependencies=TRUE)
-p_load(tidyverse, rstan, ggmcmc); theme_set(theme_bw())
+p_load(tidyverse, rstan, ggmcmc, here); theme_set(theme_bw())
 rstan_options(auto_write=TRUE); options(mc.cores=parallel::detectCores())
 
 
@@ -63,7 +63,7 @@ lines(new.x$x, pred.lm[,3], col="blue", lty=2)
 ##---
 
 stan_d <- list(n=n, x=sim.df$x, y=sim.df$y)
-out_stan <- stan(file="code/lm.stan", data=stan_d, iter=5000, thin=5)
+out_stan <- stan(file=here("code","lm.stan"), data=stan_d, iter=5000, thin=5)
 out_stan
 plot(out_stan)
 traceplot(out_stan)

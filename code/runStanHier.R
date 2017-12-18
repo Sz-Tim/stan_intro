@@ -12,7 +12,7 @@
 ##---
 
 if(!require(pacman)) install.packages("pacman", dependencies=TRUE)
-p_load(tidyverse, rstan, ggmcmc); theme_set(theme_bw())
+p_load(tidyverse, rstan, ggmcmc, coda); theme_set(theme_bw())
 rstan_options(auto_write=TRUE); options(mc.cores=parallel::detectCores())
 
 
@@ -56,6 +56,8 @@ stan_d <- list(n=n, s=s, site=site, x=sim.df$x, y=sim.df$y)
 # you can set iter=20, chains=1 or something similar.
 out_stan <- stan(file="code/lm_hier.stan", data=stan_d, iter=5000, thin=5)
 
+out_mcmc <- As.mcmc.list(out_stan)
+gelman.plot(out_mcmc)
 
 out_stan
 plot(out_stan, pars=c("alpha", "beta", "sigma_a", "sigma_b"))

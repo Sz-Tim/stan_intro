@@ -58,13 +58,22 @@ out_stan <- stan(file="code/lm_hier.stan", data=stan_d, iter=5000, thin=5)
 
 
 out_stan
-plot(out_stan)
-traceplot(out_stan)
-pairs(out_stan)
+plot(out_stan, pars=c("alpha", "beta", "sigma_a", "sigma_b"))
+traceplot(out_stan, pars=c("alpha", "beta", "sigma_a", "sigma_b"))
+pairs(out_stan, pars=c("alpha", "beta", "sigma_a", "sigma_b"))
 stan_rhat(out_stan)
 
-stan.gg <- ggs(out_stan)
-ggs_density(stan.gg) + facet_wrap(~Parameter)
+stan.gg <- ggs(out_stan) 
+true.vals <- data.frame(val=c(alpha, beta, a_s, b_s, sigma_a, sigma_b, sigma_e),
+                        Parameter=c("alpha", "beta", 
+                              paste0("a_s", "[", 1:s, "]"),
+                              paste0("b_s", "[", 1:s, "]"),
+                              "sigma_a", "sigma_b", "sigma_e"))
+
+ggs_density(stan.gg) + facet_wrap(~Parameter, scales="free") + 
+  geom_vline(data=true.vals, aes(xintercept=val))
+ggs_caterpillar(stan.gg) + 
+  geom_point(data=true.vals, aes(x=val, y=Parameter), colour="red")
 ggs_crosscorrelation(stan.gg)
 ggs_autocorrelation(stan.gg)
 
